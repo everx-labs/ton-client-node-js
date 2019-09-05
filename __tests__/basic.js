@@ -1,4 +1,4 @@
-import { TONClient } from 'index.js';
+import { TONClient } from '../index.js';
 
 import init from './init';
 
@@ -6,7 +6,7 @@ beforeAll(init);
 
 test('basic', async () => {
 	const ton = TONClient.shared;
-	expect(await ton.config.getVersion()).toEqual('0.9.50');
+	expect(await ton.config.getVersion()).toEqual('0.10.1');
 
 	try {
         await ton.crypto.hdkeyXPrvDerivePath("???", "");

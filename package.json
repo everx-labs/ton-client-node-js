@@ -4,7 +4,8 @@
 	"description": "TON SDK Library for Node.Js",
 	"main": "index.js",
 	"scripts": {
-		"install": "node install.js"
+		"install": "node install.js",
+		"npm_install": "npm install"
 	},
 	"keywords": [],
 	"author": "",

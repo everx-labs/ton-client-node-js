@@ -1,4 +1,4 @@
-import { TONClient } from 'index.js';
+import { TONClient } from '../index.js';
 
 jest.setTimeout(600000); // 1 min
 

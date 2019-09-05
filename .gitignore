@@ -2,3 +2,7 @@
 .vscode/
 node_modules/
 package-lock.json
+*.dylib
+*.so
+*.dll
+*.node
