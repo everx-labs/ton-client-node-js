@@ -1,7 +1,8 @@
-import { TONClient } from '../src';
+// @flow
+import { TONClient } from '../index';
 
-import { WalletContractPackage } from '../src/contracts/WalletContract';
-import type { TONContractPackage } from "../src/modules/TONContractsModule";
+import { WalletContractPackage } from './contracts/WalletContract';
+import type { TONContractPackage } from "ton-client-js/src/modules/TONContractsModule";
 
 import init from './init';
 
@@ -72,12 +73,11 @@ test('test', async () => {
 });
 
 test('run', async () => {
-    const { wallet } = TONClient.shared;
     const { contracts } = TONClient.shared;
     const result = await contracts.run({
         address: walletAddress,
         functionName: 'getVersion',
-        abi: wallet.package.abi,
+        abi: WalletContractPackage.abi,
         input: {},
         keyPair: walletKeys,
     });
@@ -85,12 +85,11 @@ test('run', async () => {
 });
 
 test('decode_unkown_input', async () => {
-    const { wallet } = TONClient.shared;
     const { contracts } = TONClient.shared;
     const body = 'te6ccoEBAgEAcwARcwEbACfvUIcBgJTr3AOCAGABAMDr2GubWXYR6wuk6WFn4btjW3w+DbidhSrKArHbqCaunLGN9LwAbQFT9kyOpN6DR6DJbuKkvC94KwJgan7xeTUHS89H/vKbWZbzZEHu4euhqvQE2I9aW+PNdn2BKZJXlA4=';
 
     const result = await contracts.decode_unknown_run_input({
-        abi: wallet.package.abi,
+        abi: WalletContractPackage.abi,
         bodyBase64: body
     });
 

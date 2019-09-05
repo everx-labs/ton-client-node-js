@@ -1,7 +1,8 @@
 /* eslint-disable no-bitwise */
-import { TONClient } from '../src';
+import { TONClient } from '../index';
 
-import { SubscriptionContractPackage } from '../src/contracts/SubscriptionContract';
+import { SubscriptionContractPackage } from './contracts/SubscriptionContract';
+import { WalletContractPackage } from "./contracts/WalletContract";
 
 import init from './init';
 
@@ -56,12 +57,16 @@ test('piggyBank', async () => {
     const keys = await ton.crypto.ed25519Keypair();
     console.log('[PiggyBank] Wallet keys:', keys);
     // Deploy wallet
-    const walletAddress = await ton.wallet.deploy(keys);
+    const walletAddress = (await ton.contracts.deploy({
+        package: WalletContractPackage,
+        constructorParams: {},
+        keyPair: keys
+    })).address;
     console.log('[PiggyBank] Wallet address:', walletAddress);
     // Get wallet version
     const version = await ton.contracts.run({
         address: walletAddress,
-        abi: ton.wallet.package.abi,
+        abi: WalletContractPackage.abi,
         functionName: 'getVersion',
         input: {},
         keyPair: keys,
@@ -91,7 +96,7 @@ test('piggyBank', async () => {
     const setSubscriptionInput = { address: `x${subscriptionAddress}` };
     const setSubscriptionResponse = await ton.contracts.run({
         address: walletAddress,
-        abi: ton.wallet.package.abi,
+        abi: WalletContractPackage.abi,
         functionName: 'setSubscriptionAccount',
         input: setSubscriptionInput,
         keyPair: keys,
@@ -101,7 +106,7 @@ test('piggyBank', async () => {
 
     const getSubscriptionResponse = await ton.contracts.run_local({
         address: walletAddress,
-        abi: ton.wallet.package.abi,
+        abi: WalletContractPackage.abi,
         functionName: 'getSubscriptionAccount',
         input: {},
     });

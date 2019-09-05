@@ -1,4 +1,4 @@
-import { TONClient } from "../src";
+import { TONClient } from "../index";
 import init from './init';
 
 beforeAll(init);
@@ -38,10 +38,8 @@ test('All Accounts', async () => {
 test('Message', async () => {
     const ton = TONClient.shared;
     const messages = await ton.queries.messages.query({
-        match: {
-            id: '3a8e38b419a452fe7a0073e71c083f926055d0f249485ab9f8ca6e9825c20b8c'
-        }
-    }, 'body header { ExtOutMsgInfo { created_at } }');
+            _key: { eq: '3a8e38b419a452fe7a0073e71c083f926055d0f249485ab9f8ca6e9825c20b8c' }
+    }, 'body header { ...on MessageHeaderExtOutMsgInfoVariant { ExtOutMsgInfo { created_at } } }');
     expect(messages[0].header.ExtOutMsgInfo.created_at).toEqual(1562342740);
 });
 
@@ -49,14 +47,14 @@ test('Ranges', async () => {
     const ton = TONClient.shared;
     const messages = await ton.queries.messages.query({
             header: { ExtOutMsgInfo: { created_at: { gt: 1562342740 } } },
-    }, 'body header { ExtOutMsgInfo { created_at } }');
+    }, 'body header { ...on MessageHeaderExtOutMsgInfoVariant { ExtOutMsgInfo { created_at } } }');
     expect(messages[0].header.ExtOutMsgInfo.created_at).toBeGreaterThan(1562342740);
 });
 
 test('Wait For', async () => {
     const ton = TONClient.shared;
     const data = await ton.queries.transactions.waitFor({
-        now: { '>': 1563449 },
+        now: { gt: 1563449 },
     }, '_key status');
     console.log('>>>', data);
     expect(data.status).toEqual('Finalized');

@@ -1,5 +1,5 @@
-import { TONClient } from '../src';
-import TONCryptoModule, { TONOutputEncoding } from "../src/modules/TONCryptoModule";
+import { TONClient } from '../index';
+import TONCryptoModule, { TONOutputEncoding } from "ton-client-js/dist/modules/TONCryptoModule";
 
 import init from './init';
 
