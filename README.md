@@ -1,2 +1,2 @@
-# ton-client-node-js
-TON Client Library for Node.js
+# ton-sdk-node-js
+TON SDK Library for Node.js
