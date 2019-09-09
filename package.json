@@ -7,7 +7,7 @@
 		"install": "node install.js",
 		"npm_install": "npm install"
 	},
-	"keywords": ["TON", "Javascript", "API"],
+	"keywords": ["TON", "Javascript", "API", "Client"],
 	"author": "TON DEV SOLUTIONS LTD.",
 	"license": "SEE LICENSE IN LICENSE",
 	"devDependencies": {
