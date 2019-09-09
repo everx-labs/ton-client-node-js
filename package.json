@@ -9,7 +9,7 @@
 	},
 	"keywords": ["TON", "Javascript", "API"],
 	"author": "TON DEV SOLUTIONS LTD.",
-	"license": "https://ton.dev/licenses",
+	"license": "SEE LICENSE IN LICENSE",
 	"devDependencies": {
 		"@babel/runtime": "^7.4.4",
 		"@babel/core": "^7.4.4",
