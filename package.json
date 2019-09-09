@@ -7,9 +7,9 @@
 		"install": "node install.js",
 		"npm_install": "npm install"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "",
+	"keywords": ["TON", "Javascript", "API"],
+	"author": "TON DEV SOLUTIONS LTD.",
+	"license": "https://ton.dev/licenses",
 	"devDependencies": {
 		"@babel/runtime": "^7.4.4",
 		"@babel/core": "^7.4.4",
