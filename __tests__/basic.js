@@ -22,7 +22,7 @@ beforeAll(init);
 
 test('basic', async () => {
 	const ton = TONClient.shared;
-	expect(await ton.config.getVersion()).toEqual('0.10.1');
+	expect(await ton.config.getVersion()).toEqual('0.11.0');
 
 	try {
         await ton.crypto.hdkeyXPrvDerivePath("???", "");

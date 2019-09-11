@@ -35,7 +35,7 @@ const walletKeys = {
     secret: '7bfe77bbd3ad57ada9ed323da83504723e3af7cd3ba68b02d3c8335f75e0a24e',
 };
 
-const walletAddress = '6a1dff029f9a5f3d19bdb6de52d372d56c3b45949c16e6b626816fb139f5f052';
+const walletAddress = 'adb63a228837e478c7edf5fe3f0b5d12183e1f22246b67712b99ec538d6c5357';
 
 test('load', async () => {
     const rich = await TONClient.shared.contracts.load({
@@ -81,7 +81,7 @@ test('deploy_new', async () => {
 
 test('test', async () => {
     const ton = TONClient.shared;
-    await ton.contracts.send_grams({
+    await ton.contracts.sendGrams({
         fromAccount: richAddress,
         toAccount: walletAddress,
         amount: 100,
@@ -100,11 +100,11 @@ test('run', async () => {
     console.log('[Contracts] Get version response:', result);
 });
 
-test('decode_unkown_input', async () => {
+test('decodeInputMessageBody', async () => {
     const { contracts } = TONClient.shared;
     const body = 'te6ccoEBAgEAcwARcwEbACfvUIcBgJTr3AOCAGABAMDr2GubWXYR6wuk6WFn4btjW3w+DbidhSrKArHbqCaunLGN9LwAbQFT9kyOpN6DR6DJbuKkvC94KwJgan7xeTUHS89H/vKbWZbzZEHu4euhqvQE2I9aW+PNdn2BKZJXlA4=';
 
-    const result = await contracts.decode_unknown_run_input({
+    const result = await contracts.decodeInputMessageBody({
         abi: WalletContractPackage.abi,
         bodyBase64: body
     });
