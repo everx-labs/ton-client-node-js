@@ -113,6 +113,69 @@ test('decodeInputMessageBody', async () => {
     expect(result.output).toEqual({ type : "0x1", value: "0x3b9aca00", meta: "x01" });
 });
 
+const events_package: TONContractPackage = {
+    abi: {
+        'ABI version': 0,
+        functions: [{
+            name: 'constructor',
+            inputs: [
+            ],
+            outputs: [
+            ]
+        }, {
+            name: 'emitValue',
+            inputs: [
+                {name:'id',type:'uint256'}
+            ],
+            outputs: [
+            ]
+        }, {
+            name: 'returnValue',
+            inputs: [
+                {name:'id',type:'uint256'}
+            ],
+            outputs: [
+                {name:'value0',type:'uint256'}
+            ]
+        }],
+        events: [{
+            name: 'EventThrown',
+            inputs: [
+                {name:'id',type:'uint256'}
+            ]
+        }]
+    },
+    imageBase64: "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"
+};
+
+test('filterOutput', async () => {
+    const ton = TONClient.shared;
+    const keys = await ton.crypto.ed25519Keypair();
+    const deployed = await ton.contracts.deploy({
+        package: events_package,
+        constructorParams: {},
+        keyPair: keys,
+    });
+
+    const resultEmit = await ton.contracts.run({
+        address: deployed.address,
+        functionName: 'emitValue',
+        abi: events_package.abi,
+        input: {id: "0"},
+        keyPair: keys,
+    });
+    console.log('[Contracts] emitValue:', resultEmit);
+
+    const resultReturn = await ton.contracts.run({
+        address: deployed.address,
+        functionName: 'returnValue',
+        abi: events_package.abi,
+        input: {id: "0"},
+        keyPair: keys,
+    });
+    console.log('[Contracts] returnValue:', resultReturn);
+});
+
 const foo_package: TONContractPackage = {
     abi: {
         "ABI version": 0,
