@@ -125,6 +125,20 @@ test('crypto', async () => {
     });
     expect(decrypted2).toEqual('Test Message');
 
+    const e = await crypto.naclSecretBox({
+        message: { text: 'Text with \' and \" and : {}' },
+        nonce: '2a33564717595ebe53d91a785b9e068aba625c8453a76e45',
+        key: '8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8',
+        outputEncoding: TONOutputEncoding.Base64,
+    });
+    const d = await crypto.naclSecretBoxOpen({
+        message: { base64: e },
+        nonce: '2a33564717595ebe53d91a785b9e068aba625c8453a76e45',
+        key: '8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8',
+        outputEncoding: TONOutputEncoding.Text
+    });
+    console.log('>>>', d);
+
     // nacl sign
     const signed = await crypto.naclSign(
         { text: 'Test Message' },
@@ -178,5 +192,11 @@ test('crypto', async () => {
     expect(second).toEqual('xprvA1KNMo63UcGjmDF1bX39Cw2BXGUwrwMjeD5qvQ3tA3qS3mZQkGtpf4DHq8FDLKAvAjXsYGLHDP2dVzLu9ycta8PXLuSYib2T3vzLf3brVgZ');
     expect(await crypto.hdkeyXPrvSecret(second)).toEqual('1c566ade41169763b155761406d3cef08b29b31cf8014f51be08c0cb4e67c5e1');
     expect(await crypto.hdkeyXPrvPublic(second)).toEqual('02a87d9764eedaacee45b0f777b5a242939b05fa06873bf511ca9a59cb46a5f526');
+
+    const s = await crypto.hdkeyXPrvSecret(second);
+    const p = await crypto.hdkeyXPrvPublic(second);
+    console.log('>>>', p);
+    console.log('>>>', (await crypto.naclSignKeypairFromSecretKey(s)).public);
+
 });
 

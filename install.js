@@ -22,7 +22,8 @@ const http = require('http');
 const zlib = require('zlib');
 
 const p = os.platform();
-const v = process.env.npm_package_version.split('.').join('_');
+const binVersion = process.env.npm_package_binVersion || process.env.npm_package_version;
+const bv = binVersion.split('.').join('_');
 const root = process.cwd();
 const binariesHost = 'sdkbinaries.tonlabs.io';
 
@@ -95,9 +96,9 @@ async function dl(dst, src) {
 }
 
 async function main() {
-    await dl(`tonclient.node`, `tonclient_${v}_nodejs_addon_${p}`);
+    await dl(`tonclient.node`, `tonclient_${bv}_nodejs_addon_${p}`);
     if (p === 'darwin') {
-        await dl('libtonclientnodejs.dylib', `tonclient_${v}_nodejs_dylib_${p}`);
+        await dl('libtonclientnodejs.dylib', `tonclient_${bv}_nodejs_dylib_${p}`);
     }
 }
 
