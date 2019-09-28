@@ -16,13 +16,11 @@
 
 import { TONClient } from '../index.js';
 
-jest.setTimeout(600000); // 1 min
+test("Binaries", async () => {
+    const client = new TONClient();
+    client.config.setData({ servers: [] });
+    await client.setup();
+    const version = client.config.getVersion();
+    expect(version).toBeTruthy();
+});
 
-export default async () => {
-    TONClient.shared.config.setData({
-        defaultWorkchain: 0,
-        servers: ["http://0.0.0.0"],
-        log_verbose: true,
-    });
-    await TONClient.shared.setup();
-};

@@ -6,7 +6,8 @@
 	"main": "index.js",
 	"scripts": {
 		"install": "node install.js",
-		"npm_install": "npm install"
+		"npm_install": "npm install",
+		"test": "jest"
 	},
 	"keywords": [
 		"TON",
