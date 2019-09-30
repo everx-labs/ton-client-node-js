@@ -22,7 +22,7 @@ const http = require('http');
 const zlib = require('zlib');
 
 const p = os.platform();
-const v = process.env.npm_package_version.version.split('.');
+const v = process.env.npm_package_version.split('.');
 const bv = `${v[0]}.${v[1]}.${~~(Number.parseInt(v[2]) / 100) * 100}`.split('.').join('_');
 const root = process.cwd();
 const binariesHost = 'sdkbinaries.tonlabs.io';
