@@ -55,7 +55,7 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.11.8",
+		"ton-client-js": "^0.13.0",
 		"node-fetch": "^2.6.0",
 		"websocket": "^1.0.28"
 	}

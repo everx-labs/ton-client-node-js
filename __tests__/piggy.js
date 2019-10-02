@@ -21,6 +21,7 @@ import { SubscriptionContractPackage } from './contracts/SubscriptionContract';
 import { WalletContractPackage } from "./contracts/WalletContract";
 
 import init from './init';
+import get_grams_from_giver from './contracts';
 
 const PiggyBankPackage = {
     abi: {
@@ -73,6 +74,13 @@ test('piggyBank', async () => {
     const keys = await ton.crypto.ed25519Keypair();
     console.log('[PiggyBank] Wallet keys:', keys);
     // Deploy wallet
+    const walletMessage = await ton.contracts.createDeployMessage({
+        package: WalletContractPackage,
+        constructorParams: {},
+        keyPair: keys
+    });
+    await get_grams_from_giver(walletMessage.address);
+
     const walletAddress = (await ton.contracts.deploy({
         package: WalletContractPackage,
         constructorParams: {},
@@ -90,6 +98,13 @@ test('piggyBank', async () => {
     console.log('[PiggyBank] Wallet version:', version);
 
     // Deploy piggy bank
+    const piggyMessage = await ton.contracts.createDeployMessage({
+        package: PiggyBankPackage,
+        constructorParams: piggyBankParams,
+        keyPair: keys,
+    });
+    await get_grams_from_giver(piggyMessage.address);
+
     const piggyBankAddress = (await ton.contracts.deploy({
         package: PiggyBankPackage,
         constructorParams: piggyBankParams,
@@ -100,6 +115,14 @@ test('piggyBank', async () => {
 
     // Deploy subscription
     const subscriptionParams = { wallet: `x${walletAddress}` };
+    
+    const subscriptionMessage = await ton.contracts.createDeployMessage({
+        package: SubscriptionContractPackage,
+        constructorParams: subscriptionParams,
+        keyPair: keys,
+    });
+    await get_grams_from_giver(subscriptionMessage.address);
+
     const subscriptionAddress = (await ton.contracts.deploy({
         package: SubscriptionContractPackage,
         constructorParams: subscriptionParams,
