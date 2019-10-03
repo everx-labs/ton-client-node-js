@@ -38,7 +38,10 @@ function downloadAndGunzip(dest, url) {
                 });
                 return;
             }
-            fs.mkdirSync(path.dirname(path.resolve(dest)), { recursive: true });
+            const dirPath = path.dirname(path.resolve(dest));
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
             let file = fs.createWriteStream(dest, { flags: "w" });
             let opened = false;
             const failed = (err) => {
