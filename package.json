@@ -1,12 +1,12 @@
 {
 	"name": "ton-client-node-js",
-	"version": "0.12.0",
-	"binVersion": "0.12.0",
+	"version": "0.12.1",
 	"description": "TON Client Library for Node.Js",
 	"main": "index.js",
 	"scripts": {
 		"install": "node install.js",
-		"npm_install": "npm install"
+		"npm_install": "npm install",
+		"test": "jest"
 	},
 	"keywords": [
 		"TON",
@@ -55,7 +55,7 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.11.8",
+		"ton-client-js": "^0.12.1",
 		"node-fetch": "^2.6.0",
 		"websocket": "^1.0.28"
 	}
