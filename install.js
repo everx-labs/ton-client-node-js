@@ -16,15 +16,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
-const https = require('https');
 const http = require('http');
 const zlib = require('zlib');
 
-const p = os.platform();
-const v = process.env.npm_package_version.split('.');
-const bv = `${v[0]}.${v[1]}.${~~(Number.parseInt(v[2]) / 100) * 100}`.split('.').join('_');
-const root = process.cwd();
+const {p, bv, bp} = require('./binaries');
+let root = process.cwd();
 const binariesHost = 'sdkbinaries.tonlabs.io';
 
 
@@ -37,10 +33,6 @@ function downloadAndGunzip(dest, url) {
                     message: `Download failed with ${response.statusCode}: ${response.statusMessage}`,
                 });
                 return;
-            }
-            const dirPath = path.dirname(path.resolve(dest));
-            if (!fs.existsSync(dirPath)) {
-                fs.mkdirSync(dirPath, { recursive: true });
             }
             let file = fs.createWriteStream(dest, { flags: "w" });
             let opened = false;
@@ -91,7 +83,7 @@ function downloadAndGunzip(dest, url) {
 
 
 async function dl(dst, src) {
-    const dst_path = `${root}/${dst}`;
+    const dst_path = path.join(root, dst);
     const src_url = `http://${binariesHost}/${src}.gz`;
     process.stdout.write(`Downloading ${dst} from ${binariesHost} ...`);
     await downloadAndGunzip(dst_path, src_url);
@@ -99,6 +91,17 @@ async function dl(dst, src) {
 }
 
 async function main() {
+    try {
+        const testFile = path.join(root, '__testwritable__.txt');
+        fs.writeFileSync(testFile, 'test writable', {encoding: 'utf8'});
+        fs.unlinkSync(testFile);
+    } catch {
+        root = bp;
+        if (!fs.existsSync(bp)) {
+            fs.mkdirSync(bp, { recursive: true });
+        }
+    }
+    console.log('Downloading binaries to:', root);
     await dl(`tonclient.node`, `tonclient_${bv}_nodejs_addon_${p}`);
     if (p === 'darwin') {
         await dl('libtonclientnodejs.dylib', `tonclient_${bv}_nodejs_dylib_${p}`);

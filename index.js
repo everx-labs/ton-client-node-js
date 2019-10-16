@@ -13,8 +13,17 @@
  * See the License for the specific TON DEV software governing permissions and
  * limitations under the License.
  */
+let library;
+try {
+    library = require('./tonclient.node');
+} catch (error) {
+    const os = require('os');
+    const path = require('path');
+    const {bv} = require('./binaries');
+    const addonPath = path.resolve(os.homedir(), '.tonlabs', 'binaries', `${bv}`, 'tonclient.node');
+    library = require(addonPath);
+}
 
-const library = require('./tonclient.node');
 const {TONClient} = require('ton-client-js');
 const fetch = require('node-fetch');
 const WebSocket = require('websocket');
