@@ -17,9 +17,7 @@
 import { TONClient } from '../index.js';
 
 test("Binaries", async () => {
-    const client = new TONClient();
-    client.config.setData({ servers: [] });
-    await client.setup();
+    const client = await TONClient.create({ servers: [] });
     const version = client.config.getVersion();
     expect(version).toBeTruthy();
 });
