@@ -1,4 +1,4 @@
-# ton-sdk-node-js
+# ton-client-node-js
 TON SDK Library for Node.js
 
 ---
