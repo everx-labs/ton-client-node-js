@@ -1,5 +1,7 @@
 # ton-client-node-js
-TON SDK Library for Node.js
+TON Labs SDK Library for Node.js
+
+See https://docs.ton.dev for documentation
 
 ---
 Copyright 2018-2019 TON DEV SOLUTIONS LTD.
