@@ -6,7 +6,7 @@
 	"scripts": {
 		"install": "node install.js",
 		"npm_install": "npm install",
-		"test": "jest"
+		"test": "jest --forceExit --detectOpenHandles"
 	},
 	"keywords": [
 		"TON",
