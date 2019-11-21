@@ -14,98 +14,36 @@
  * limitations under the License.
  */
 
+import { ensureBinaries, getBinariesVersion } from "./binaries";
+
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
-const http = require('http');
-const zlib = require('zlib');
 
-const {p, bv, bp} = require('./binaries');
-let root = process.cwd();
-const binariesHost = 'sdkbinaries.tonlabs.io';
-
-
-function downloadAndGunzip(dest, url) {
-    return new Promise((resolve, reject) => {
-
-        const request = http.get(url, response => {
-            if (response.statusCode !== 200) {
-                reject({
-                    message: `Download failed with ${response.statusCode}: ${response.statusMessage}`,
-                });
-                return;
-            }
-            let file = fs.createWriteStream(dest, { flags: "w" });
-            let opened = false;
-            const failed = (err) => {
-                if (file) {
-                    file.close();
-                    file = null;
-
-                    fs.unlink(dest, () => {
-                    });
-                    reject(err);
-                }
-            };
-
-            const unzip = zlib.createGunzip();
-            unzip.pipe(file);
-
-
-            response.pipe(unzip);
-
-
-            request.on("error", err => {
-                failed(err);
-            });
-
-            file.on("finish", () => {
-                if (opened && file) {
-                    resolve();
-                }
-            });
-
-            file.on("open", () => {
-                opened = true;
-            });
-
-            file.on("error", err => {
-                if (err.code === "EEXIST") {
-                    file.close();
-                    reject("File already exists");
-                } else {
-                    failed(err);
-                }
-            });
-        });
-    });
-
-}
-
-
-async function dl(dst, src) {
-    const dst_path = path.join(root, dst);
-    const src_url = `http://${binariesHost}/${src}.gz`;
-    process.stdout.write(`Downloading ${dst} from ${binariesHost} ...`);
-    await downloadAndGunzip(dst_path, src_url);
-    process.stdout.write('\n');
+function isPathWritable(testPath) {
+    try {
+        const testFile = path.resolve(testPath, '__testwritable__.txt');
+        fs.writeFileSync(testFile, 'test writable', { encoding: 'utf8' });
+        fs.unlinkSync(testFile);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 async function main() {
-    try {
-        const testFile = path.join(root, '__testwritable__.txt');
-        fs.writeFileSync(testFile, 'test writable', {encoding: 'utf8'});
-        fs.unlinkSync(testFile);
-    } catch {
-        root = bp;
-        if (!fs.existsSync(bp)) {
-            fs.mkdirSync(bp, { recursive: true });
+    const packageJsonPath = path.resolve(__dirname);
+    let binariesPath = path.resolve(__dirname);
+    if (!isPathWritable(binariesPath)) {
+        binariesPath = path.resolve(os.homedir(), '.tonlabs', getBinariesVersion(packageJsonPath));
+        if (!fs.existsSync(binariesPath)) {
+            fs.mkdirSync(binariesPath, { recursive: true });
         }
     }
-    console.log('Downloading binaries to:', root);
-    await dl(`tonclient.node`, `tonclient_${bv}_nodejs_addon_${p}`);
-    if (p === 'darwin') {
-        await dl('libtonclientnodejs.dylib', `tonclient_${bv}_nodejs_dylib_${p}`);
-    }
+    await ensureBinaries(packageJsonPath, binariesPath, {
+        'tonclient.node': 'tonclient_{v}_nodejs_addon_{p}',
+        'darwin?libtonclientnodejs.dylib': 'tonclient_{v}_nodejs_dylib_{p}'
+    });
 }
 
 (async () => {
