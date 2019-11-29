@@ -14,7 +14,7 @@ pipeline {
         parallelsAlwaysFailFast()
     }
     stages {
-        stage('Started') { 
+        stage('Started') {
             steps {
                 script {
                     G_project = G_giturl.substring(15,G_giturl.length()-4)
