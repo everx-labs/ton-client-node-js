@@ -22,7 +22,7 @@ pipeline {
                     echo """Job: ${JOB_NAME}
                     Project: ${getVar(G_project)}
                     Commit: ${GIT_COMMIT}
-                    Hash: ${getVar(G_reason)}"""
+                    Hash: ${G_reason}"""
                 }
             }
         }
