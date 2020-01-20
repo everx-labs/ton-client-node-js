@@ -26,5 +26,26 @@ pipeline {
                 }
             }
         }
+        stage('Run tests') {
+            steps {
+                echo "Job: ${JOB_NAME}"
+                script {
+                    def params = [
+                        [
+                            $class: 'StringParameterValue',
+                            name: 'ton_acquiring_branch',
+                            value: "${GIT_BRANCH}"
+                        ],
+                        [
+                            $class: 'StringParameterValue',
+                            name: 'ton_jessie_branch',
+                            value: "${GIT_BRANCH}"
+                        ],
+                    ] 
+
+                    build job: "Integration/integration-tests/master", parameters: params
+                }
+            }
+        }
     }
 }
