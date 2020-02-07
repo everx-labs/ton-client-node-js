@@ -14,15 +14,21 @@ pipeline {
         parallelsAlwaysFailFast()
     }
     stages {
-        stage('Started') { 
+        stage("Build info") {
             steps {
                 script {
-                    G_project = G_giturl.substring(15,G_giturl.length()-4)
-                    G_reason = sh (script: "git show -s --format=%h ${GIT_COMMIT}", returnStdout: true).trim()
-                    echo """Job: ${JOB_NAME}
-                    Project: ${getVar(G_project)}
-                    Commit: ${GIT_COMMIT}
-                    Hash: ${getVar(G_reason)}"""
+                    def buildCause = currentBuild.getBuildCauses()
+                    echo "buildCause: ${buildCause}"
+
+                    C_TEXT = """
+                        Job: ${JOB_NAME}
+                        Build cause: ${buildCause.shortDescription[0]}
+                    """
+
+                    C_PROJECT = GIT_URL.substring(19,GIT_URL.length()-4)
+                    echo C_PROJECT
+                    echo C_TEXT
+                    currentBuild.description = C_TEXT
                 }
             }
         }
