@@ -47,6 +47,16 @@ pipeline {
                             name: 'ton_jessie_branch',
                             value: "${GIT_BRANCH}"
                         ],
+                        [
+                            $class: 'BooleanParameterValue',
+                            name: 'RUN_TESTS_ALL',
+                            value: false
+                        ],
+                        [
+                            $class: 'BooleanParameterValue',
+                            name: 'RUN_TESTS_TON_ACQUIRING',
+                            value: true
+                        ],
                     ] 
 
                     build job: "Integration/integration-tests/master", parameters: params
