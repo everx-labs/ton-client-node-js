@@ -1,4 +1,5 @@
 G_giturl = "git@github.com:tonlabs/ton-client-node-js.git"
+G_gitcred = 'TonJenSSH'
 G_project = ""
 G_reason = ""
 
@@ -7,7 +8,7 @@ def getVar(Gvar) {
 }
 def checkAndCreateBranch(ton_client_url) {
     ton_repo_name = ton_client_url.substring(ton_client_url.lastIndexOf('/') + 1, ton_client_url.lastIndexOf('.') )
-    ton_client_path = "~/workdir/${ton_repo_name}-version"
+    ton_client_path = "tmp/${ton_repo_name}-version"
     ton_client_nodejs_path = "git+ssh://git@github.com/tonlabs/ton-client-node-js.git#${G_binversion}-rc"
     return sh (script:  """
         rm -rf $ton_client_path
