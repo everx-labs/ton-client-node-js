@@ -67,6 +67,36 @@ pipeline {
                 }
             }
         }
+        stage('Check branch in TON-Acquiring') {
+            agent any
+            when {
+                expression {
+                    GIT_BRANCH == "${getVar(G_binversion)}-rc"
+                }
+            }
+            steps {
+                script {
+                    sshagent (credentials: [G_gitcred]) {
+                        checkAndCreateBranch("git@github.com:tonlabs/TON-Acquiring.git")
+                    }
+                }
+            }
+        }
+        stage('Check branch in Jessie') {
+            agent any
+            when {
+                expression {
+                    GIT_BRANCH == "${getVar(G_binversion)}-rc"
+                }
+            }
+            steps {
+                script {
+                    sshagent (credentials: [G_gitcred]) {
+                        checkAndCreateBranch("git@github.com:tonlabs/jessie.git")
+                    }
+                }
+            }
+        }
         stage('Run tests') {
             steps {
                 echo "Job: ${JOB_NAME}"
@@ -95,36 +125,6 @@ pipeline {
                     ] 
 
                     build job: "Integration/integration-tests/master", parameters: params
-                }
-            }
-        }
-        stage('Check branch in TON-Acquiring') {
-            agent any
-            when {
-                expression {
-                    GIT_BRANCH == "${getVar(G_binversion)}-rc"
-                }
-            }
-            steps {
-                script {
-                    sshagent (credentials: [G_gitcred]) {
-                        checkAndCreateBranch("git@github.com:tonlabs/TON-Acquiring.git")
-                    }
-                }
-            }
-        }
-        stage('Check branch in Jessie') {
-            agent any
-            when {
-                expression {
-                    GIT_BRANCH == "${getVar(G_binversion)}-rc"
-                }
-            }
-            steps {
-                script {
-                    sshagent (credentials: [G_gitcred]) {
-                        checkAndCreateBranch("git@github.com:tonlabs/jessie.git")
-                    }
                 }
             }
         }
