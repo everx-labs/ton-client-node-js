@@ -1,6 +1,6 @@
 {
 	"name": "ton-client-node-js",
-	"version": "0.20.0",
+	"version": "0.20.100",
 	"description": "TON Client Library for Node.Js",
 	"main": "index.js",
 	"scripts": {
@@ -55,7 +55,7 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.20.0",
+		"ton-client-js": "git@github.com:tonlabs/ton-client-js.git#0.20.100-rc",
 		"node-fetch": "^2.6.0",
 		"websocket": "^1.0.28"
 	}
