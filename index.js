@@ -17,10 +17,15 @@ let library;
 try {
     library = require('./tonclient.node');
 } catch (error) {
+    const fs = require('fs');
     const os = require('os');
     const path = require('path');
     const {bv} = require('./binaries');
-    const addonPath = path.resolve(os.homedir(), '.tonlabs', 'binaries', `${bv}`, 'tonclient.node');
+    let addonPath = path.resolve(__dirname, 'tonclient.node');
+    if (fs.existsSync(addonPath)) {
+        throw error;
+    }
+    addonPath = path.resolve(os.homedir(), '.tonlabs', 'binaries', `${bv}`, 'tonclient.node');
     library = require(addonPath);
 }
 
