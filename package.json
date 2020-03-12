@@ -55,7 +55,7 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "git@github.com:tonlabs/ton-client-js.git#0.21.0-rc",
+		"ton-client-js": "^0.21.0",
 		"node-fetch": "^2.6.0",
 		"websocket": "^1.0.28"
 	}
