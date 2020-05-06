@@ -21,7 +21,7 @@ const zlib = require('zlib');
 
 const {p, bv, bp} = require('./binaries');
 let root = process.cwd();
-const binariesHost = 'sdkbinaries.tonlabs.io';
+const binariesHost = 'sdkbinaries-ws.tonlabs.io';
 
 
 function downloadAndGunzip(dest, url) {
@@ -85,7 +85,7 @@ function downloadAndGunzip(dest, url) {
 async function dl(dst, src) {
     const dst_path = path.join(root, dst);
     const src_url = `http://${binariesHost}/${src}.gz`;
-    process.stdout.write(`Downloading ${dst} from ${binariesHost} ...`);
+    process.stdout.write(`Downloading ${dst} from ${src_url} to ${dst_path} ...`);
     await downloadAndGunzip(dst_path, src_url);
     process.stdout.write('\n');
 }
