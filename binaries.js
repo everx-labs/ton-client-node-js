@@ -19,7 +19,6 @@ const path = require('path');
 const os = require('os');
 const p = os.platform();
 
-const v = version.split('.');
-const bv = (binaries_version || `${v[0]}.${v[1]}.${~~(Number.parseInt(v[2]) / 100) * 100}`).split('.').join('_');
+const bv = (binaries_version || version).split('.')[0];
 const bp = path.resolve(os.homedir(), '.tonlabs', 'binaries', bv);
 module.exports = { p, bv, bp };
