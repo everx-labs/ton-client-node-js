@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-import { TONClient } from '../index.js';
+import {TONClient} from '../index.js'
+import {bv} from '../binaries';
+
+require('dotenv').config();
 
 test("Binaries", async () => {
     const client = await TONClient.create({ servers: [] });
-    const version = client.config.getVersion();
-    expect(version).toBeTruthy();
+    const version = await client.config.getVersion();
+    console.log(`version: ${version}`)
+    if (process.env.BINARIES_VERSION) {
+        expect(version)
+            .toEqual(process.env.BINARIES_VERSION);
+    } else {
+        expect(version.split('.')[0])
+            .toEqual(bv);
+    }
 });
 

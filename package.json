@@ -27,7 +27,7 @@
 		"type": "git",
 		"url": "https://github.com/tonlabs/ton-client-node-js.git"
 	},
-	"homepage": "https://ton.dev/node-se",
+	"homepage": "https://docs.ton.dev",
 	"devDependencies": {
 		"@babel/runtime": "^7.4.4",
 		"@babel/core": "^7.4.4",
@@ -62,8 +62,9 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.23.0",
+		"dotenv": "^8.2.0",
 		"node-fetch": "^2.6.0",
+		"ton-client-js": "^0.23.0",
 		"websocket": "^1.0.28"
 	}
 }
