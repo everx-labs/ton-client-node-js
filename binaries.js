@@ -7,6 +7,6 @@ const path = require('path');
 const os = require('os');
 const p = os.platform();
 require('dotenv').config();
-const bv = process.env.TON_SDK_BIN_VERSION ? process.env.TON_SDK_BIN_VERSION : (binaries_version || version).split('.')[0];
+const bv = process.env.TON_SDK_BIN_VERSION ? process.env.TON_SDK_BIN_VERSION : binaries_version.split('.')[0];
 const bp = path.resolve(os.homedir(), '.tonlabs', 'binaries', bv);
 module.exports = { p, bv, bp };
