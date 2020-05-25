@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-const {version, binaries_version} = require('./package.json');
+const {version} = require('./package.json');
 const path = require('path');
 const os = require('os');
 const p = os.platform();
 
-const bv = (binaries_version || version).split('.')[0];
+const bv = process.env.TON_SDK_BIN_VERSION || (version).split('.')[0];
 const bp = path.resolve(os.homedir(), '.tonlabs', 'binaries', bv);
 module.exports = { p, bv, bp };
