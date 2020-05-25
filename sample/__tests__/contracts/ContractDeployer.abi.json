@@ -1,0 +1,77 @@
+{
+	"ABI version": 2,
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "deployWithPubkey",
+			"inputs": [
+				{"name":"stateInit","type":"cell"},
+				{"name":"pubkey","type":"uint256"},
+				{"name":"initial_balance","type":"uint128"},
+				{"name":"constructor_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"},
+				{"name":"value1","type":"uint256"}
+			]
+		},
+		{
+			"name": "deployFromCodeAndData",
+			"inputs": [
+				{"name":"code","type":"cell"},
+				{"name":"data","type":"cell"},
+				{"name":"initial_balance","type":"uint128"},
+				{"name":"constructor_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"},
+				{"name":"value1","type":"uint256"}
+			]
+		},
+		{
+			"name": "deployWithMsgBody",
+			"inputs": [
+				{"name":"stateInit","type":"cell"},
+				{"name":"addr","type":"address"},
+				{"name":"initial_balance","type":"uint128"},
+				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"},
+				{"name":"value1","type":"uint256"}
+			]
+		},
+		{
+			"name": "getAddressOfLastDeployedContract",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "getContractInfo",
+			"inputs": [
+				{"name":"ID","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"},
+				{"name":"value1","type":"address"},
+				{"name":"value2","type":"cell"},
+				{"name":"value3","type":"uint256"}
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"lastID","type":"uint256"}
+	],
+	"events": [
+	]
+}
