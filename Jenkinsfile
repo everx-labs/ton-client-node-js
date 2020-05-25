@@ -39,13 +39,13 @@ pipeline {
                     def params = [
                         [
                             $class: 'StringParameterValue',
-                            name: 'ton_acquiring_branch',
+                            name: 'ton_client_node_js_branch',
                             value: "${GIT_BRANCH}"
                         ],
                         [
                             $class: 'StringParameterValue',
-                            name: 'ton_jessie_branch',
-                            value: "${GIT_BRANCH}"
+                            name: 'ton_client_node_js_commit',
+                            value: "${GIT_COMMIT}"
                         ],
                         [
                             $class: 'BooleanParameterValue',
@@ -54,12 +54,13 @@ pipeline {
                         ],
                         [
                             $class: 'BooleanParameterValue',
-                            name: 'RUN_TESTS_TON_ACQUIRING',
+                            name: 'RUN_TESTS_TON_CLIENT_NODE_JS',
                             value: true
                         ],
                     ] 
 
-                    build job: "Integration/integration-tests/master", parameters: params
+                    build job: "Integration/integration-tests/feature-add-ton-client-node-js", parameters: params
+                    // build job: "Integration/integration-tests/master", parameters: params
                 }
             }
         }
