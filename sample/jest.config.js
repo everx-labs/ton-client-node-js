@@ -3,7 +3,6 @@ module.exports = {
         'js',
     ],
     modulePathIgnorePatterns: [
-        'init-tests.js',
         'contracts/',
         '__tests__/_/',
     ],
