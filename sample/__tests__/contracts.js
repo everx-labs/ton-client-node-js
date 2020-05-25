@@ -87,7 +87,7 @@ test('Should deploy contract from contracts with code and data', async () => {
     expect(localResponse.output.value0).toBeDefined();
 });
 
-test('Should work all contract function from sample BankCollector & BankCollectorClient', async () => {
+test.skip('Should work all contract function from sample BankCollector & BankCollectorClient', async () => {
     const { contracts, crypto } = client;
     let bankCollector = {
         keys: await crypto.ed25519Keypair()
