@@ -21,4 +21,4 @@ const p = os.platform();
 
 const bv = process.env.TON_SDK_BIN_VERSION || (version).split('.')[0];
 const bp = path.resolve(os.homedir(), '.tonlabs', 'binaries', bv);
-module.exports = { p, bv, bp };
+module.exports = { p, bv, bp, version };
