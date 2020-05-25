@@ -1,24 +1,38 @@
-//import {Span} from 'opentracing';
+const { readGiverKeys, deploy_with_giver } = require('./_/giver');
+const { TONClient } = require('ton-client-node-js');
+const fs = require('fs');
+const path = require('path');
 
-const { loadPackage, init, done, deploy_with_giver } = require('./_/init-tests');
+function loadPackage(name) {
+    const base = path.resolve(process.cwd(), '__tests__', 'contracts');
+    const abi = path.resolve(base, `${name}.abi.json`);
+    const tvc = path.resolve(base, `${name}.tvc`);
+    return {
+        abi: JSON.parse(fs.readFileSync(abi, 'utf8')),
+        imageBase64: fs.readFileSync(tvc).toString('base64'),
+    }
+}
 
 const BankCollectorPackage = loadPackage('BankCollector');
 const BankCollectorClientPackage = loadPackage('BankCollectorClient');
 const ContractDeployerPackage = loadPackage('ContractDeployer');
 const HelloPackage = loadPackage('Hello');
 let client;
-
+const dotenv = require('dotenv');
+dotenv.config();
+const serversConfig = process.env.TON_NETWORK_ADDRESS.replace(/ /gi, '').split(',');
 
 beforeAll(async () => {
-//    this.setTimeout(200000);
-    jest.setTimeout(600000);
-    client = await init();
-});
-afterAll(async () => {
-    await done();
+    client = await TONClient.create({
+        servers: serversConfig,
+        log_verbose: false,
+    });
+    console.log('[Init] Created client is connected to: ', client.config.data && client.config.data.servers);
+    await readGiverKeys(client);
 });
 
-test('Should deploy contract from contract with code and data', async () => {
+
+test('Should deploy contract from contracts with code and data', async () => {
     const { contracts, crypto } = client;
     let deployer = {
         package: ContractDeployerPackage,
@@ -73,8 +87,7 @@ test('Should deploy contract from contract with code and data', async () => {
     expect(localResponse.output.value0).toBeDefined();
 });
 
-test('Should work all contract function from sample BankCollector & BankCollectorClient', async () => {
-    // await client.trace('int-bankCollectorKeys', async (span: Span) => {
+test.skip('Should work all contract function from sample BankCollector & BankCollectorClient', async () => {
     const { contracts, crypto } = client;
     let bankCollector = {
         keys: await crypto.ed25519Keypair()
@@ -136,7 +149,6 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         input: {},
         keyPair: bankCollectorClient.keys,
     });
-
     result = await contracts.runLocal({
         address: bankCollectorClient.address,
         abi: BankCollectorClientPackage.abi,
@@ -145,7 +157,7 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         keyPair: bankCollectorClient.keys,
     });
     expect(result.output.value0).toBe("0x64");
-    
+
     result = await contracts.run({
         address: bankCollector.address,
         abi: BankCollectorPackage.abi,
@@ -161,5 +173,6 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         input: {},
         keyPair: bankCollectorClient.keys,
     });
+
 
 });

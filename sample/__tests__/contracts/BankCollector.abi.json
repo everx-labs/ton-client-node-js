@@ -3,24 +3,10 @@
 	"header": ["time"],
 	"functions": [
 		{
-			"name": "demandDebt",
+			"name": "addClient",
 			"inputs": [
-				{"name":"amount","type":"uint256"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "setDebtAmount",
-			"inputs": [
-				{"name":"amount","type":"uint256"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "receivePayment",
-			"inputs": [
+				{"name":"addr","type":"address"},
+				{"name":"debtAmount","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -33,10 +19,8 @@
 			]
 		},
 		{
-			"name": "addClient",
+			"name": "receivePayment",
 			"inputs": [
-				{"name":"addr","type":"address"},
-				{"name":"debtAmount","type":"uint256"}
 			],
 			"outputs": [
 			]
