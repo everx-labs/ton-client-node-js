@@ -39,7 +39,7 @@ contract BankCollector is IBankCollector {
         uint nextID;
 
         // Expiration period.
-        uint32 constant EXPIRATION_PERIOD = 10; // 10sec
+        uint32 constant EXPIRATION_PERIOD = 100; 
 
         // Add client to database.
         function addClient(address addr, uint debtAmount) public onlyOwner {
