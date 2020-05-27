@@ -59,8 +59,7 @@ pipeline {
                         ],
                     ] 
 
-                    build job: "Integration/integration-tests/feature-add-ton-client-node-js", parameters: params
-                    // build job: "Integration/integration-tests/master", parameters: params
+                    build job: "Integration/integration-tests/master", parameters: params
                 }
             }
         }
