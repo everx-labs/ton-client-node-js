@@ -1,0 +1,47 @@
+{
+	"ABI version": 2,
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "addClient",
+			"inputs": [
+				{"name":"addr","type":"address"},
+				{"name":"debtAmount","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDebtAmount",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "receivePayment",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "demandExpiredDebts",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}

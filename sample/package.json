@@ -1,0 +1,24 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "scripts": {
+    "test": "jest --forceExit --detectOpenHandles --testTimeout=200000 --coverage --verbose",
+    "test-ci": "jest --forceExit --detectOpenHandles --testTimeout=120000 --bail --verbose",
+    "test-ci-silent": "jest --forceExit --detectOpenHandles --testTimeout=120000 --bail",
+    "test-ci-seq": "jest --forceExit --detectOpenHandles --testTimeout=120000 --bail --verbose --runInBand",
+    "test-cinet": "jest --forceExit --detectOpenHandles --testTimeout=300000 --bail --verbose",
+    "test-cinet-silent": "jest --forceExit --detectOpenHandles --testTimeout=300000 --bail",
+    "test-cinet-seq": "jest --forceExit --detectOpenHandles --testTimeout=300000 --bail --verbose --runInBand"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ton-client-node-js": "../"
+  },
+  "devDependencies": {
+    "jest": "^25.4.0"
+  }
+}

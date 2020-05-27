@@ -15,10 +15,14 @@
  */
 
 import { TONClient } from '../index.js';
+import {bv, version} from '../binaries';
 
-test("Binaries", async () => {
+test('Test versions compatibility', async () => {
     const client = await TONClient.create({ servers: [] });
-    const version = client.config.getVersion();
-    expect(version).toBeTruthy();
+    const ver_builtin = await client.config.getVersion();
+    expect(ver_builtin).toBeTruthy();
+    expect(version.split('.')[0])
+        .toEqual(ver_builtin.split('.')[0]);
+    console.log(`Client version ${version} uses compatible binaries version: ${ver_builtin}`,
+        `\n(requested version to download: ${bv})`);
 });
-
