@@ -1,5 +1,4 @@
 pragma solidity >=0.5.0;
-
 // Interface to the bank client.
 abstract contract IBankClient {
         function demandDebt(uint amount) public virtual;
@@ -39,7 +38,7 @@ contract BankCollector is IBankCollector {
         uint nextID;
 
         // Expiration period.
-        uint32 constant EXPIRATION_PERIOD = 100; 
+        uint32 constant EXPIRATION_PERIOD = 86400; // 1 day
 
         // Add client to database.
         function addClient(address addr, uint debtAmount) public onlyOwner {
