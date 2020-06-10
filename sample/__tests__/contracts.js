@@ -1,17 +1,6 @@
-const { readGiverKeys, deploy_with_giver } = require('./_/giver');
+const { readGiverKeys, deploy_with_giver, loadPackage, waitOutMessages } = require('./_/giver');
 const { TONClient } = require('ton-client-node-js');
-const fs = require('fs');
-const path = require('path');
 
-function loadPackage(name) {
-    const base = path.resolve(process.cwd(), '__tests__', 'contracts');
-    const abi = path.resolve(base, `${name}.abi.json`);
-    const tvc = path.resolve(base, `${name}.tvc`);
-    return {
-        abi: JSON.parse(fs.readFileSync(abi, 'utf8')),
-        imageBase64: fs.readFileSync(tvc).toString('base64'),
-    }
-}
 
 const BankCollectorPackage = loadPackage('BankCollector');
 const BankCollectorClientPackage = loadPackage('BankCollectorClient');
@@ -91,14 +80,13 @@ test('Should deploy contract from contracts with code and data', async () => {
 });
 
 test('Should work all contract function from sample BankCollector & BankCollectorClient', async () => {
-    const { contracts, crypto } = client;
+    const { contracts, crypto, queries } = client;
     let bankCollector = {
         keys: await crypto.ed25519Keypair()
     };
     let bankCollectorClient = {
         keys: await crypto.ed25519Keypair()
     }
-
     bankCollector.address = (await deploy_with_giver(client, {
         package: BankCollectorPackage,
         constructorParams: {},
@@ -116,31 +104,13 @@ test('Should work all contract function from sample BankCollector & BankCollecto
     })).address;
     expect(bankCollectorClient.address).toBeDefined();
 
-    await contracts.run({
-        address: bankCollectorClient.address,
-        abi: BankCollectorClientPackage.abi,
-        functionName: 'getDebtAmount',
-        input: {},
-        keyPair: bankCollectorClient.keys,
-    });
-
-    let result = await contracts.runLocal({
-        address: bankCollectorClient.address,
-        abi: BankCollectorClientPackage.abi,
-        functionName: 'sayDebt',
-        input: {},
-        keyPair: bankCollectorClient.keys,
-    });
-    expect(result.output.value0).toBe("0x0");
-    console.log(result);
-
-    result = await contracts.run({
+    let result = await contracts.run({
         address: bankCollector.address,
         abi: BankCollectorPackage.abi,
         functionName: 'addClient',
         input: {
             addr: bankCollectorClient.address,
-            debtAmount: 100
+            debtAmount: 300000
         },
         keyPair: bankCollector.keys,
     });
@@ -152,22 +122,17 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         input: {},
         keyPair: bankCollectorClient.keys,
     });
-    result = await contracts.runLocal({
+    expect(result.output.value0).toBe("0x0");
+
+
+    result = await contracts.run({
         address: bankCollectorClient.address,
         abi: BankCollectorClientPackage.abi,
-        functionName: 'sayDebt',
+        functionName: 'obtainDebtAmount',
         input: {},
         keyPair: bankCollectorClient.keys,
     });
-    expect(result.output.value0).toBe("0x64");
-
-    result = await contracts.run({
-        address: bankCollector.address,
-        abi: BankCollectorPackage.abi,
-        functionName: 'demandExpiredDebts',
-        input: {},
-        keyPair: bankCollector.keys,
-    });
+    await waitOutMessages(client, result.transaction);
 
     result = await contracts.run({
         address: bankCollectorClient.address,
@@ -177,5 +142,5 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         keyPair: bankCollectorClient.keys,
     });
 
-
+    expect(result.output.value0).toBe("0x493e0");
 });

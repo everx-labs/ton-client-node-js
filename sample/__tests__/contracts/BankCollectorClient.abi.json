@@ -19,6 +19,13 @@
 			]
 		},
 		{
+			"name": "obtainDebtAmount",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "setDebtAmount",
 			"inputs": [
 				{"name":"amount","type":"uint256"}
@@ -27,21 +34,7 @@
 			]
 		},
 		{
-			"name": "receivePayment",
-			"inputs": [
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "getDebtAmount",
-			"inputs": [
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "sayDebt",
 			"inputs": [
 			],
 			"outputs": [

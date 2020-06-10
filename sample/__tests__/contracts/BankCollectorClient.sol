@@ -47,17 +47,16 @@ contract BankClient is IBankClient {
                 IBankCollector(msg.sender).receivePayment.value(amount)();
         }
 
-        function getDebtAmount() public alwaysAccept {
+        function obtainDebtAmount() public alwaysAccept {
                 IBankCollector(bankCollector).getDebtAmount.value(500000000)();
         }
 
         function setDebtAmount(uint amount) public override onlyCollector {
                 debtAmount = amount;
         }
-        function sayDebt() public view returns (uint) {
+
+        function getDebtAmount() public view alwaysAccept returns (uint) {
                 return debtAmount;
         }
-       
-    
 
 }
