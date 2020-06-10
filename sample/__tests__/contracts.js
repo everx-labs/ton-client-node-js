@@ -1,4 +1,4 @@
-const { readGiverKeys, deploy_with_giver, loadPackage } = require('./_/giver');
+const { readGiverKeys, deploy_with_giver, loadPackage, waitOutMessages } = require('./_/giver');
 const { TONClient } = require('ton-client-node-js');
 
 
@@ -132,18 +132,7 @@ test('Should work all contract function from sample BankCollector & BankCollecto
         input: {},
         keyPair: bankCollectorClient.keys,
     });
-    for (const msg of (result.transaction.out_messages || [])) {
-        if (msg.msg_type === 0) {
-            console.log(`Wait for ${msg.id || "Empty ID"}`);
-            await queries.transactions.waitFor(
-                {
-                    in_msg: { eq: msg.id },
-                    status: { eq: 3 },
-                },
-                'lt'
-            );
-        }
-    }
+    await waitOutMessages(client, result.transaction);
 
     result = await contracts.run({
         address: bankCollectorClient.address,

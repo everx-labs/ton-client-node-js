@@ -175,19 +175,7 @@ async function get_grams_from_giver(client, account, amount) {
         };
     }
     const result = await contracts.run(params);
-    for (const msg of (result.transaction.out_messages || [])) {
-        if (msg.msg_type === 0) {
-
-            //console.log(`Giver. Wait for ${msg.id || "Empty ID"}`);
-            await queries.transactions.waitFor(
-                {
-                    in_msg: { eq: msg.id },
-                    status: { eq: 3 },
-                },
-                'lt'
-            );
-        }
-    }
+    await waitOutMessages(client, result.transaction);
     console.timeEnd(`Get grams from giver to ${account}`);
 }
 
@@ -205,8 +193,24 @@ async function deploy_with_giver(client, params) {
     return contracts.deploy(params);
 }
 
+async function waitOutMessages(client, transaction) {
+    for (const msg of (transaction.out_messages || [])) {
+        if (msg.msg_type === 0) {
+            //console.log(`Giver. Wait for ${msg.id || "Empty ID"}`);
+            await client.queries.transactions.waitFor(
+                {
+                    in_msg: { eq: msg.id },
+                    status: { eq: 3 },
+                },
+                'lt'
+            );
+        }
+    }
+}
+
 module.exports = {
     loadPackage,
     deploy_with_giver,
-    readGiverKeys
+    readGiverKeys,
+    waitOutMessages
 }
