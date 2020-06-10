@@ -175,13 +175,14 @@ async function get_grams_from_giver(client, account, amount) {
         };
     }
     const result = await contracts.run(params);
-    for (const msg in (result.transaction.out_messages || [])) {
+    for (const msg of (result.transaction.out_messages || [])) {
         if (msg.msg_type === 0) {
-            // config.log(`Giver. Wait for ${msg.id || "Empty ID"}`);
+
+            //console.log(`Giver. Wait for ${msg.id || "Empty ID"}`);
             await queries.transactions.waitFor(
                 {
                     in_msg: { eq: msg.id },
-                    status: { eq: 5 },
+                    status: { eq: 3 },
                 },
                 'lt'
             );
