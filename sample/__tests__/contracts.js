@@ -104,7 +104,7 @@ test('Should work all contract function from sample BankCollector & BankCollecto
     })).address;
     expect(bankCollectorClient.address).toBeDefined();
 
-    result = await contracts.run({
+    let result = await contracts.run({
         address: bankCollector.address,
         abi: BankCollectorPackage.abi,
         functionName: 'addClient',
