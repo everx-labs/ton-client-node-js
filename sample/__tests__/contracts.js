@@ -33,7 +33,7 @@ beforeAll(async () => {
 
 
 test('Should deploy contract from contracts with code and data', async () => {
-    const { contracts, crypto } = client;
+    const { contracts, crypto, queries } = client;
     let deployer = {
         package: ContractDeployerPackage,
         keys: await crypto.ed25519Keypair()
@@ -83,6 +83,9 @@ test('Should deploy contract from contracts with code and data', async () => {
         functionName: 'sayHello',
         input: {},
         keyPair: null,
+        waitParams: {
+            timeout: 30000
+        }
     });
     expect(localResponse.output.value0).toBeDefined();
 });
