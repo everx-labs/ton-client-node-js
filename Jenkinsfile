@@ -39,6 +39,18 @@ pipeline {
                     def params = [
                         [
                             $class: 'StringParameterValue',
+                            name: 'ton_client_js_commit',
+                            value: "master"
+                            // value: "0.24.0-rc"
+                        ],
+                        [
+                            $class: 'BooleanParameterValue',
+                            name: 'CHANGE_JS_DEPS',
+                            value: false
+                            // value: true
+                        ],
+                        [
+                            $class: 'StringParameterValue',
                             name: 'ton_client_node_js_branch',
                             value: "${GIT_BRANCH}"
                         ],
