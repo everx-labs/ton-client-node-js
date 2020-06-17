@@ -40,14 +40,14 @@ pipeline {
                         [
                             $class: 'StringParameterValue',
                             name: 'ton_client_js_commit',
-                            // value: "master"
-                            value: "0.24.0-rc"
+                            value: "master"
+                            // value: "0.24.0-rc"
                         ],
                         [
                             $class: 'BooleanParameterValue',
                             name: 'CHANGE_JS_DEPS',
-                            // value: false
-                            value: true
+                            value: false
+                            // value: true
                         ],
                         [
                             $class: 'StringParameterValue',
