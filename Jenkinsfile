@@ -39,7 +39,7 @@ pipeline {
                     def params = [
                         [
                             $class: 'StringParameterValue',
-                            name: 'ton_client_js_commit',
+                            name: 'ton_client_js_branch',
                             value: "master"
                             // value: "0.24.0-rc"
                         ],
