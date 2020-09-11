@@ -1,4 +1,5 @@
 pragma solidity >=0.5.0;
+
 // Interface to the bank client.
 abstract contract IBankClient {
         function demandDebt(uint amount) public virtual;
@@ -7,8 +8,8 @@ abstract contract IBankClient {
 
 // Interface to the bank collector.
 abstract contract IBankCollector {
-        function receivePayment() public payable  virtual;
-        function getDebtAmount() public payable virtual;
+        function receivePayment() public  virtual;
+        function getDebtAmount() public virtual;
 }
 
 
@@ -17,7 +18,7 @@ contract BankCollector is IBankCollector {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier onlyOwner {
-                // Runtime functions to obtain message sender pubkey and contract pubkey.
+        // Runtime functions to obtain message sender pubkey and contract pubkey.
 		require(msg.pubkey() == tvm.pubkey());
 
 		// Runtime function that allows contract to process inbound messages spending
@@ -43,37 +44,39 @@ contract BankCollector is IBankCollector {
         // Add client to database.
         function addClient(address addr, uint debtAmount) public onlyOwner {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(addr);
-                if (exists) {
-                        info.debtAmount += debtAmount;
-                        clientDB[addr] = info;
+                optional(ClientInfo) info = clientDB.fetch(addr);
+                if (info.hasValue()) {
+                        ClientInfo i = info.get();
+                        i.debtAmount += debtAmount;
+                        clientDB[addr] = i;
                 } else {
                         clientDB[addr] = ClientInfo(debtAmount, uint32(now) + EXPIRATION_PERIOD);
                 }
         }
 
         // Function for client to get his debt amount.
-        function getDebtAmount() public payable override {
+        function getDebtAmount() public override {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(msg.sender);
-                if (exists) {
-                        IBankClient(msg.sender).setDebtAmount(info.debtAmount);
+                optional(ClientInfo) info = clientDB.fetch(msg.sender);
+                if (info.hasValue()) {
+                        IBankClient(msg.sender).setDebtAmount(info.get().debtAmount);
                 } else {
                         IBankClient(msg.sender).setDebtAmount(0);
                 }
         }
 
         // Function for client to return debt.
-        function receivePayment() public payable override {
+        function receivePayment() public override {
                 address addr = msg.sender;
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(addr);
-                if (exists) {
-                        if (info.debtAmount <= msg.value) {
+                optional(ClientInfo) info = clientDB.fetch(addr);
+                if (info.hasValue()) {
+                        ClientInfo i = info.get();
+                        if (i.debtAmount <= msg.value) {
                                 delete clientDB[addr];
                         } else {
-                                info.debtAmount -= msg.value;
-                                clientDB[addr] = info;
+                                i.debtAmount -= msg.value;
+                                clientDB[addr] = i;
                         }
                 }
         }
@@ -82,12 +85,13 @@ contract BankCollector is IBankCollector {
         function demandExpiredDebts() public view onlyOwner {
                 uint32 curTime = uint32(now);
                 // Mapping member function to obtain minimal key and associated value from mapping if it exists.
-                (address addr, ClientInfo info, bool exists) = clientDB.min();
-                while(exists) {
+                optional(address, ClientInfo) client = clientDB.min(); 
+                while(client.hasValue()) {
+                        (address addr, ClientInfo info) = client.get();
                         if (info.expiredTimestamp <= curTime)
                                 IBankClient(addr).demandDebt(info.debtAmount);
                         // Mapping member function to obtain next key and associated value from mapping if it exists.
-                        (addr, info, exists) = clientDB.next(addr);
+                        client = clientDB.next(addr);
                 }
         }
 

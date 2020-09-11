@@ -23,7 +23,7 @@ contract ContractDeployer {
 
 	// First variant of contract deployment.
 	function deployWithPubkey(TvmCell stateInit, uint256 pubkey, uint128 initial_balance,
-	uint32 constructor_id) public acceptOnlyOwner returns (address, uint) {
+	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
 		// Runtime function that inserts public key into contracts data field.
 		TvmCell stateInitWithKey = tvm.insertPubkey(stateInit, pubkey);
 
@@ -31,7 +31,7 @@ contract ContractDeployer {
 		address addr = address(tvm.hash(stateInitWithKey));
 
 		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInitWithKey, addr, initial_balance, constructor_id);
+		tvm.deployAndCallConstructor(stateInitWithKey, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
 
 		uint newID = lastID;
 		contracts[newID] = DeployedContract(addr, stateInitWithKey, pubkey);
@@ -42,7 +42,7 @@ contract ContractDeployer {
 
 	// Second variant of contract deployment.
 	function deployFromCodeAndData(TvmCell code, TvmCell data, uint128 initial_balance,
-	uint32 constructor_id) public acceptOnlyOwner returns (address, uint) {
+	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
 		// Runtime function to generate StateInit from code and data cells.
 		TvmCell stateInit = tvm.buildStateInit(code, data);
 
@@ -50,7 +50,7 @@ contract ContractDeployer {
 		address addr = address(tvm.hash(stateInit));
 
 		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInit, addr, initial_balance, constructor_id);
+		tvm.deployAndCallConstructor(stateInit, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
 
 		// In this function we deploy contract without public key, that's why we store struct with zero pubkey.
 		uint newID = lastID;
@@ -80,9 +80,9 @@ contract ContractDeployer {
 
 	// Function that allows to get information about contract with given ID.
 	function getContractInfo(uint ID) public view acceptOnlyOwner returns (bool, address, TvmCell, uint256) {
-		(bool exists, DeployedContract contr) = contracts.fetch(ID);
-		if (exists)
-			return (true, contr.addr, contr.stateInit, contr.pubkey);
+		optional(DeployedContract) contr = contracts.fetch(ID);
+		if (contr.hasValue())
+			return (true, contr.get().addr, contr.get().stateInit, contr.get().pubkey);
 		TvmCell cell;
 		return (false, address(0), cell, 0);
 	}
