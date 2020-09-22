@@ -11,8 +11,8 @@
 The JavaScript SDK implements the client-side libraries used by applications working with TON OS GraphQL API.  
 This package supports web (browser), mobile-web, and server (Node.js) clients. 
 
-[Common Javascript SDK](https://github.com/tonlabs/ton-client-js) is distributed via npm package:   
-[common JS package](https://www.npmjs.com/package/ton-client-js)
+[Common Javascript SDK](https://github.com/tonlabs/ton-client-js) is distributed via [npm package](https://www.npmjs.com/package/ton-client-js).
+
 
 
 **Attention!** Because the JS library uses pre-compiled [core sdk rust library](https://github.com/tonlabs/TON-SDK), you need to 
