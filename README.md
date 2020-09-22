@@ -1,10 +1,12 @@
 # TON Javascript Node.js SDK
+[![npm publish](https://github.com/tonlabs/ton-client-node-js/workflows/npm%20publish/badge.svg)](https://www.npmjs.com/package/ton-client-node-js)
 
-**Community links:**
+
+## Community links:
 
 [![Chat on Telegram](https://img.shields.io/badge/chat-on%20telegram-9cf.svg)](https://t.me/ton_sdk)  [![Gitter](https://badges.gitter.im/ton-sdk/community.svg)](https://gitter.im/ton-sdk/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-**Documentation**  
+## Documentation
 
 [GraphQL API and SDK documentation](https://docs.ton.dev/86757ecb2/p/92b041-overview)
 
