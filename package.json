@@ -1,6 +1,6 @@
 {
 	"name": "ton-client-node-js",
-	"version": "0.26.2",
+	"version": "0.27.0",
 	"description": "TON Client Library for Node.Js",
 	"main": "index.js",
 	"scripts": {
